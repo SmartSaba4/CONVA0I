@@ -8,6 +8,7 @@ import { SpeechToTextConvertor } from './AI/SpeechToTextConvertor';
 import bodyParser from 'body-parser';
 import { TextToSpeechConvertor } from './AI/TextToSpeechConvertor';
 import { Utils } from './Utils/Logger';
+const cors = require('cors');
 
 
 ////////////// KEYS ////////////////////////////////////////////////
@@ -21,6 +22,7 @@ const STATIC_STORAGE_PATH = path.join(process.cwd(), 'storage')
 
 ////////////// APPS ////////////////////////////////////////////////
 const app = express();
+app.use(cors());
 const session = new Session(openAI_API_KEY);
 const convertor = new SpeechToTextConvertor(AssemblyAI_API_KEY);
 const text_to_speech_converter = new TextToSpeechConvertor(ELEVENLABS_API_KEY);
@@ -47,11 +49,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 ////////////// APIS ////////////////////////////////////////////////
 app.get('/', (req: Request, res: Response) => {
-    session.Message("What is Hello World!").then((result: any) => {
-        res.send(result.choices[0].message.content);
-    }).catch((e: Error) => {
-        res.send(e.message);
-    });
+    res.send("Hello Dev !");
+    // session.Message("What is Hello World!").then((result: any) => {
+    //     res.send(result.choices[0].message.content);
+    // }).catch((e: Error) => {
+    //     res.send(e.message);
+    // });
 });
 
 app.post('/audio-to-text', upload.single('audio'), async (req: Request, res: Response) => {
